@@ -1,7 +1,23 @@
+var http = require("http");
+var messages=[];
+
+function getMessages () {
+    return messages;
+}
+
+var server = http.createServer(function(req,res){
+    res.writeHeader(200, {"Content-Type":"text/event-stream"
+    , "Cache-Control":"no-cache"
+    , "Connection":"keep-alive"
+    , "Access-Control-Allow-Origin": "*"});
+var interval = setInterval( function() {
+    res.write("data: " + getMessages() + "\n\n");
+},2000);
+});
+
 var WebSocketServer = require('ws').Server;
-wss = new WebSocketServer({port: 8081, path: '/testing'});
-clients=[];
-messages=[];
+var wss = new WebSocketServer({server});
+var clients=[];
 wss.on('connection', function(ws) {
     clients.push(ws);
     ws.on('message', function(message) {
@@ -16,3 +32,5 @@ wss.on('connection', function(ws) {
     });
     console.log('new connection');
 });
+
+server.listen(8081)

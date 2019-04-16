@@ -1,9 +1,12 @@
 <html>
     <script language="javascript">
-        var source = new EventSource("http://localhost:9090");
+        var source = new EventSource("http://localhost:8081");
         source.onmessage = function(event) {
-            document.getElementById("result").innerHTML = "<h3>Voltagem medida: " +
-            event.data + "</h3>";
+            var message = event.data.split(",")
+            document.getElementById("result").innerHTML = ""
+            message.forEach(element => {
+                document.getElementById("result").innerHTML += element + "<br>";
+            });
         };
     </script>
     <body>
