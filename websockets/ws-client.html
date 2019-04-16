@@ -1,0 +1,31 @@
+<html>
+    <script language="javascript">
+        var connection = new WebSocket('ws://localhost:8081/testing');
+        
+        connection.onopen = function(){
+            console.log('Connection open!');
+        }
+        connection.onclose = function(){
+            console.log('Connection closed');
+        }
+        function putOnScreen(message) {
+            document.getElementById("result").innerHTML += message + "<br>";
+        }
+        function writeMessage() {
+            var x = document.getElementById("message").value;
+            document.getElementById("message").value = "";
+            putOnScreen(x);
+            connection.send(x);
+        }
+        connection.onmessage = function(e){
+            var server_message = e.data;
+            console.log(server_message);
+            putOnScreen(server_message);
+        }
+    </script>
+    <body>
+        <input type="text" id="message">
+        <button type="button" onclick="writeMessage()">Enviar</button>
+        <div id="result"></div>
+    </body>
+</html>
